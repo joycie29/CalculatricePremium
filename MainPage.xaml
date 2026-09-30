@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CalculatorApp.MainPage"
+             BackgroundColor="#0A0E27"
+             Padding="16"
+             Title="Premium Calculator">
+
+    <Grid RowDefinitions="140,*,Auto" ColumnDefinitions="*" RowSpacing="20">
+        
+        <!-- AFFICHAGE PREMIUM -->
+        <Border Grid.Row="0" 
+                StrokeShape="RoundRectangle 20"
+                Stroke="#00D9FF"
+                StrokeThickness="3"
+                BackgroundColor="#0F1A35"
+                Padding="20"
+                Shadow="5,5,20,#00D9FF">
+            
+            <VerticalStackLayout Spacing="5">
+                <Label x:Name="OperationDisplay"
+                       Text=""
+                       FontSize="16"
+                       TextColor="#00D9FF"
+                       FontAttributes="Bold"
+                       HorizontalOptions="End"
+                       Opacity="0.7"/>
+                
+                <Label x:Name="ResultDisplay"
+                       Text="0"
+                       FontSize="52"
+                       TextColor="#FFFFFF"
+                       FontAttributes="Bold"
+                       HorizontalOptions="End"
+                       VerticalOptions="End"/>
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- GRILLE DE BOUTONS 6x6 -->
+        <Grid Grid.Row="1" 
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+              ColumnDefinitions="*,*,*,*,*,*"
+              RowSpacing="12"
+              ColumnSpacing="12"
+              Padding="0">
+
+            <!-- LIGNE 1: AC, Mn, x^n, %, π², CE -->
+            <Button Text="AC" Clicked="OnClearClicked" Grid.Row="0" Grid.Column="0" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="Mn" Clicked="OnMemoryClicked" Grid.Row="0" Grid.Column="1" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="x^n" Clicked="OnPowerClicked" Grid.Row="0" Grid.Column="2" Style="{StaticResource BlueButtonStyle}"/>
+            <Button Text="%" Clicked="OnOperationClicked" Grid.Row="0" Grid.Column="3" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="π²" Clicked="OnPiSquaredClicked" Grid.Row="0" Grid.Column="4" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="CE" Clicked="OnClearClicked" Grid.Row="0" Grid.Column="5" Style="{StaticResource OrangeButtonStyle}"/>
+
+            <!-- LIGNE 2: 7, 8, 9, /, ÷, % -->
+            <Button Text="7" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="0" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="8" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="1" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="9" Clicked="OnNumberClicked" Grid.Row="1" Grid.Column="2" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="/" Clicked="OnOperationClicked" Grid.Row="1" Grid.Column="3" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="÷" Clicked="OnOperationClicked" Grid.Row="1" Grid.Column="4" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="%" Clicked="OnOperationClicked" Grid.Row="1" Grid.Column="5" Style="{StaticResource OrangeButtonStyle}"/>
+
+            <!-- LIGNE 3: 4, 5, 6, ×, −, M+ -->
+            <Button Text="4" Clicked="OnNumberClicked" Grid.Row="2" Grid.Column="0" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="5" Clicked="OnNumberClicked" Grid.Row="2" Grid.Column="1" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="6" Clicked="OnNumberClicked" Grid.Row="2" Grid.Column="2" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="×" Clicked="OnOperationClicked" Grid.Row="2" Grid.Column="3" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="−" Clicked="OnOperationClicked" Grid.Row="2" Grid.Column="4" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="M+" Clicked="OnMemoryAddClicked" Grid.Row="2" Grid.Column="5" Style="{StaticResource OrangeButtonStyle}"/>
+
+            <!-- LIGNE 4: 1, 2, 3, −, +, = (sur 2 colonnes) -->
+            <Button Text="1" Clicked="OnNumberClicked" Grid.Row="3" Grid.Column="0" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="2" Clicked="OnNumberClicked" Grid.Row="3" Grid.Column="1" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="3" Clicked="OnNumberClicked" Grid.Row="3" Grid.Column="2" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="−" Clicked="OnOperationClicked" Grid.Row="3" Grid.Column="3" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="+" Clicked="OnOperationClicked" Grid.Row="3" Grid.Column="4" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="=" Clicked="OnEqualsClicked" Grid.Row="3" Grid.Column="5" Style="{StaticResource OrangeButtonStyle}" FontAttributes="Bold" FontSize="24"/>
+
+            <!-- LIGNE 5: 0, ., √, /, ±, autres -->
+            <Button Text="0" Clicked="OnNumberClicked" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="." Clicked="OnDecimalClicked" Grid.Row="4" Grid.Column="2" Style="{StaticResource CyanButtonStyle}"/>
+            <Button Text="√" Clicked="OnSquareRootClicked" Grid.Row="4" Grid.Column="3" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="±" Clicked="OnToggleSignClicked" Grid.Row="4" Grid.Column="4" Style="{StaticResource PurpleButtonStyle}"/>
+            <Button Text="⌫" Clicked="OnDeleteClicked" Grid.Row="4" Grid.Column="5" Style="{StaticResource OrangeButtonStyle}"/>
+        </Grid>
+    </Grid>
+
+    <ContentPage.Resources>
+        <Style x:Key="CyanButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#1A2A4A"/>
+            <Setter Property="TextColor" Value="#00D9FF"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="BorderWidth" Value="2"/>
+            <Setter Property="BorderColor" Value="#00D9FF"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="BlueButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#1A1F4A"/>
+            <Setter Property="TextColor" Value="#1E88FF"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="BorderWidth" Value="2"/>
+            <Setter Property="BorderColor" Value="#1E88FF"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="PurpleButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#2A1A4A"/>
+            <Setter Property="TextColor" Value="#BB86FC"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="BorderWidth" Value="2"/>
+            <Setter Property="BorderColor" Value="#BB86FC"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="OrangeButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#4A2A1A"/>
+            <Setter Property="TextColor" Value="#FFB74D"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="BorderWidth" Value="2"/>
+            <Setter Property="BorderColor" Value="#FFB74D"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+        </Style>
+    </ContentPage.Resources>
+</ContentPage>
